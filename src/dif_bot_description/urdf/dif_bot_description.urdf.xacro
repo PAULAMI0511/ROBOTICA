@@ -5,11 +5,17 @@
     <xacro:property name="chassis_length" value="0.3"/>
     <xacro:property name="chassis_width" value="0.3"/>
     <xacro:property name="chassis_height" value="0.15"/>
+    <xacro:property name="chassis_mass" value="1.0"/>
+    <xacro:property name="chassis_z_offset" value="0.075"/>
+
     <xacro:property name="wheel_radius" value="0.05"/>
     <xacro:property name="wheel_length" value="0.04"/>
+    <xacro:property name="wheel_mass" value="0.1"/>
     <xacro:property name="wheel_offset_x" value="0.08"/>
     <xacro:property name="wheel_offset_y" value="0.175"/>
+
     <xacro:property name="caster_wheel_radius" value="0.05"/>
+    <xacro:property name="caster_wheel_mass" value="0.05"/>
     <xacro:property name="caster_wheel_offset_x" value="-0.08"/>
 
     <!-- Materiales -->
@@ -23,6 +29,37 @@
         <color rgba="0 0 0 1"/>
     </material>
 
+    <!-- Macros de Inercia -->
+    <xacro:macro name="inertial_box" params="mass x y z *origin">
+        <inertial>
+            <xacro:insert_block name="origin"/>
+            <mass value="${mass}" />
+            <inertia ixx="${(1.0/12.0) * mass * (y*y + z*z)}" ixy="0.0" ixz="0.0"
+                     iyy="${(1.0/12.0) * mass * (x*x + z*z)}" iyz="0.0"
+                     izz="${(1.0/12.0) * mass * (x*x + y*y)}" />
+        </inertial>
+    </xacro:macro>
+
+    <xacro:macro name="inertial_cylinder" params="mass length radius *origin">
+        <inertial>
+            <xacro:insert_block name="origin"/>
+            <mass value="${mass}" />
+            <inertia ixx="${(1.0/12.0) * mass * (3.0*radius*radius + length*length)}" ixy="0.0" ixz="0.0"
+                     iyy="${(1.0/12.0) * mass * (3.0*radius*radius + length*length)}" iyz="0.0"
+                     izz="${(1.0/2.0) * mass * (radius*radius)}" />
+        </inertial>
+    </xacro:macro>
+
+    <xacro:macro name="inertial_sphere" params="mass radius *origin">
+        <inertial>
+            <xacro:insert_block name="origin"/>
+            <mass value="${mass}" />
+            <inertia ixx="${(2.0/5.0) * mass * (radius*radius)}" ixy="0.0" ixz="0.0"
+                     iyy="${(2.0/5.0) * mass * (radius*radius)}" iyz="0.0"
+                     izz="${(2.0/5.0) * mass * (radius*radius)}" />
+        </inertial>
+    </xacro:macro>
+
     <!-- Base Footprint -->
     <link name="base_footprint"/>
 
@@ -35,15 +72,24 @@
     <!-- Base Link -->
     <link name="base_link">
         <visual>
-            <origin xyz="0 0 ${chassis_height/2}"/>
+            <origin xyz="0 0 ${chassis_z_offset}"/>
             <geometry>
                 <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
             </geometry>
             <material name="blue"/>
         </visual>
+        <collision>
+            <origin xyz="0 0 ${chassis_z_offset}"/>
+            <geometry>
+                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_box mass="${chassis_mass}" x="${chassis_length}" y="${chassis_width}" z="${chassis_height}">
+            <origin xyz="0 0 ${chassis_z_offset}" rpy="0 0 0"/>
+        </xacro:inertial_box>
     </link>
 
-    <!-- Macro para Ruedas -->
+    <!-- Macro para Ruedas Motrices -->
     <xacro:macro name="wheel" params="prefix side_reflect">
         <link name="${prefix}_wheel">
             <visual>
@@ -52,17 +98,24 @@
                 </geometry>
                 <material name="black"/>
             </visual>
+            <collision>
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+                </geometry>
+            </collision>
+            <xacro:inertial_cylinder mass="${wheel_mass}" length="${wheel_length}" radius="${wheel_radius}">
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+            </xacro:inertial_cylinder>
         </link>
 
         <joint name="${prefix}_wheel_joint" type="continuous">
             <parent link="base_link"/>
             <child link="${prefix}_wheel"/>
-            <origin xyz="${wheel_offset_x} ${side_reflect * wheel_offset_y} 0" rpy="-${pi/2} 0 0"/>
+            <origin xyz="${wheel_offset_x} ${side_reflect * wheel_offset_y} 0" rpy="-1.57079632679 0 0"/>
             <axis xyz="0 0 1"/>
         </joint>
     </xacro:macro>
 
-    <!-- Instanciación de Ruedas -->
     <xacro:wheel prefix="left" side_reflect="1" />
     <xacro:wheel prefix="right" side_reflect="-1" />
 
@@ -74,6 +127,14 @@
             </geometry>
             <material name="white"/>
         </visual>
+        <collision>
+            <geometry>
+                <sphere radius="${caster_wheel_radius}"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_sphere mass="${caster_wheel_mass}" radius="${caster_wheel_radius}">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_sphere>
     </link>
 
     <joint name="caster_wheel_joint" type="fixed">
