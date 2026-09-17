@@ -142,5 +142,9 @@
         <child link="caster_wheel"/>
         <origin xyz="${caster_wheel_offset_x} 0 0"/>
     </joint>
+    <!-- Incluir Sensores -->
+    <xacro:include filename="sensors.xacro" />
 
 </robot>
+
+
