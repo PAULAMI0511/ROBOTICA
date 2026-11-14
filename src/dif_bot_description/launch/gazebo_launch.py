@@ -41,8 +41,19 @@ def generate_launch_description():
         ]
     )
 
+    # Puente Gazebo -> ROS 2
+    bridge = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        output='screen',
+        arguments=[
+            '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
+        ]
+    )
+
     return LaunchDescription([
         node_robot_state_publisher,
         gazebo,
-        spawn_entity
+        spawn_entity,
+        bridge
     ])
