@@ -9,7 +9,7 @@ import xacro
 def generate_launch_description():
     pkg_path = get_package_share_directory('dif_bot_description')
     xacro_file = os.path.join(pkg_path, 'urdf', 'dif_bot_description.urdf.xacro')
-
+    world_file = os.path.join(pkg_path, 'worlds', 'mundo_sensores.sdf')
     # Procesar archivo Xacro a XML URDF
     robot_description_raw = xacro.process_file(xacro_file).toxml()
 
@@ -26,7 +26,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
         ),
-        launch_arguments={'gz_args': '-r empty.sdf'}.items(),
+                launch_arguments={'gz_args': f'-r {world_file}'}.items(),
     )
 
     # Crear la entidad del robot en Gazebo usando ros_gz_sim create
