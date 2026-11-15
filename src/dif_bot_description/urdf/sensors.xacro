@@ -100,6 +100,35 @@
   </sensor>
 </gazebo>
 
-
+<!-- Plugin del LiDAR 3D (16 canales) -->
+<gazebo reference="laser_frame">
+  <sensor name="lidar_3d" type="gpu_lidar">
+    <gz_frame_id>laser_frame</gz_frame_id>
+    <topic>scan3d</topic>
+    <update_rate>10</update_rate>
+    <always_on>true</always_on>
+    <lidar>
+      <scan>
+        <horizontal>
+          <samples>512</samples>
+          <resolution>1</resolution>
+          <min_angle>-3.14159</min_angle>
+          <max_angle>3.14159</max_angle>
+        </horizontal>
+        <vertical>
+          <samples>16</samples>
+          <resolution>1</resolution>
+          <min_angle>-0.2618</min_angle>
+          <max_angle>0.2618</max_angle>
+        </vertical>
+      </scan>
+      <range>
+        <min>0.3</min>
+        <max>20.0</max>
+        <resolution>0.01</resolution>
+      </range>
+    </lidar>
+  </sensor>
+</gazebo>
 
 </robot>
