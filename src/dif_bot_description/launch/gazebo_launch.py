@@ -39,7 +39,6 @@ def generate_launch_description():
             '-name', 'dif_bot',
             '-z', '0.1'
         ]
-    )
 
     # Puente Gazebo -> ROS 2
     bridge = Node(
@@ -48,6 +47,7 @@ def generate_launch_description():
         output='screen',
         arguments=[
             '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
+            '/scan3d/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
         ]
     )
 
