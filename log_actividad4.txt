@@ -1,0 +1,10 @@
+[INFO] [1793220843.613425637] [moveit_client_node]: [ur_arm] plan+ejecucion -> [0.0, -1.2, 1.2, -1.57, -1.57, 0.0]
+[INFO] [1793220844.703009342] [moveit_client_node]: Resultado error_code=1 (OK)
+[INFO] [1793220844.704119467] [moveit_client_node]: [gripper] solo plan -> [0.04, 0.04]
+[INFO] [1793220844.728321768] [moveit_client_node]: Resultado error_code=1 (OK)
+[INFO] [1793220844.729349788] [moveit_client_node]: [ur_arm] plan+ejecucion -> [0.5, -1.2, 1.4, -1.57, -1.57, 0.5]
+[INFO] [1793220846.021108555] [moveit_client_node]: Resultado error_code=1 (OK)
+[INFO] [1793220846.022235388] [moveit_client_node]: [gripper] solo plan -> [0.004, 0.004]
+[INFO] [1793220846.072390581] [moveit_client_node]: Resultado error_code=1 (OK)
+[INFO] [1793220846.073651302] [moveit_client_node]: [ur_arm] plan+ejecucion -> [0.0, -1.57, 1.57, -1.57, -1.57, 0.0]
+[INFO] [1793220847.403193139] [moveit_client_node]: Resultado error_code=1 (OK)
