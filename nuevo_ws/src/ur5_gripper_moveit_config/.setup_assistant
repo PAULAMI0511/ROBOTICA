@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: ""
+    relative_path: /home/paula01/nuevo_ws/robot.urdf
+  srdf:
+    relative_path: config/ur5.srdf
+  package_settings:
+    author_name: paula
+    author_email: paula.rodriguez6a@gmail.com
+    generated_timestamp: 1793068664
