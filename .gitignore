@@ -5,3 +5,6 @@ log/
 build/
 install/
 log/
+
+nuevo_ws/src/Universal_Robots_ROS2_Driver/
+nuevo_ws/src/ur5_gripper_packages/
